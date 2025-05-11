@@ -1,0 +1,78 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="App1.Pages.RoomsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:App1.Models"
+    xmlns:converters="using:App1.Converters"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Page.Resources> 
+        <converters:DecimalToCurrencyConverter x:Key="DecimalToCurrencyConverter"/>
+    </Page.Resources>
+
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Управление номерами"
+                   Style="{StaticResource TitleTextBlockStyle}"
+                   Margin="0,0,0,10"/>
+
+        <ListView Grid.Row="1"
+                  x:Name="RoomsListView"
+                  ItemsSource="{x:Bind Rooms}"
+                  SelectionMode="Single"
+                  Margin="0,0,0,10">
+            <ListView.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" Background="{ThemeResource SystemListLowColor}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <Button Grid.Column="0" Content="Номер" Style="{StaticResource TextBlockButtonStyle}" Click="SortColumn_Click" Tag="RoomNumber"/>
+                        <Button Grid.Column="1" Content="Тип" Style="{StaticResource TextBlockButtonStyle}" Click="SortColumn_Click" Tag="RoomCategory.Name"/>
+                        <Button Grid.Column="2" Content="Вместимость" Style="{StaticResource TextBlockButtonStyle}" Click="SortColumn_Click" Tag="RoomCategory.Capacity"/>
+                        <Button Grid.Column="3" Content="Этаж" Style="{StaticResource TextBlockButtonStyle}" Click="SortColumn_Click" Tag="Floor"/>
+                        <Button Grid.Column="4" Content="Цена" Style="{StaticResource TextBlockButtonStyle}" Click="SortColumn_Click" Tag="RoomCategory.BasePricePerNight"/>
+                        <Button Grid.Column="5" Content="Статус" Style="{StaticResource TextBlockButtonStyle}" Click="SortColumn_Click" Tag="Status"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.HeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Room">
+                    <Grid Padding="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="150"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{x:Bind RoomNumber}"/>
+                        <TextBlock Grid.Column="1" Text="{x:Bind RoomCategory.Name}"/>
+                        <TextBlock Grid.Column="2" Text="{x:Bind RoomCategory.Capacity}"/>
+                        <TextBlock Grid.Column="3" Text="{x:Bind Floor}"/>
+                        <TextBlock Grid.Column="4" Text="{x:Bind RoomCategory.BasePricePerNight, Converter={StaticResource DecimalToCurrencyConverter}, Mode=OneWay}"/>
+                        <TextBlock Grid.Column="5" Text="{x:Bind Status}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <StackPanel Grid.Row="2" Orientation="Horizontal" Spacing="10">
+            <Button x:Name="AddRoomButton" Content="Добавить номер" Click="AddRoom_Click"/>
+            <Button x:Name="EditRoomButton" Content="Редактировать" Click="EditRoom_Click"/>
+            <Button x:Name="DeleteRoomButton" Content="Удалить" Click="DeleteRoom_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>

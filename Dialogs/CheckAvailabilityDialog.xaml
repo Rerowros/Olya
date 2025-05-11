@@ -1,0 +1,70 @@
+﻿<ContentDialog
+    x:Class="App1.Dialogs.CheckAvailabilityDialog"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:App1.Dialogs"
+    xmlns:models="using:App1.Models"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Title="Проверка доступности номеров"
+    CloseButtonText="Закрыть">
+
+    <Grid RowSpacing="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <StackPanel Grid.Row="0" Orientation="Vertical" Spacing="10">
+            <DatePicker x:Name="CheckInDatePicker" Header="Дата заезда" SelectedDate="{x:Bind CheckInDate, Mode=TwoWay}"/>
+            <DatePicker x:Name="CheckOutDatePicker" Header="Дата выезда" SelectedDate="{x:Bind CheckOutDate, Mode=TwoWay}"/>
+        </StackPanel>
+
+        <Button Grid.Row="1" x:Name="FindButton" Content="Найти доступные номера"
+                Click="FindButton_Click" HorizontalAlignment="Left"
+                IsEnabled="{x:Bind IsFindButtonEnabled, Mode=OneWay}"/>
+
+        <ListView Grid.Row="2" x:Name="ResultsListView" ItemsSource="{x:Bind AvailableRooms, Mode=OneWay}" SelectionMode="None" IsItemClickEnabled="False" >
+             <ListView.HeaderTemplate>
+                 <DataTemplate>
+                    <Grid Padding="0,0,0,5">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Номер" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="1" Text="Категория" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="2" Text="Цена/Ночь" FontWeight="SemiBold"/>
+                        <TextBlock Grid.Column="3" Text="Описание" FontWeight="SemiBold"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.HeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Room">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="150"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{x:Bind RoomNumber}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="1" Text="{x:Bind RoomCategory.Name}" VerticalAlignment="Center"/>
+                        <TextBlock Grid.Column="2" Text="{x:Bind RoomCategory.BasePricePerNight}" VerticalAlignment="Center" HorizontalAlignment="Right"/>
+                        <TextBlock Grid.Column="3" Text="{x:Bind RoomCategory.Description}" VerticalAlignment="Center" TextTrimming="CharacterEllipsis"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <Grid Grid.Row="3" Margin="0,10,0,0">
+            <TextBlock x:Name="StatusTextBlock" Text="{x:Bind StatusText, Mode=OneWay}" VerticalAlignment="Center"/>
+            <ProgressRing x:Name="LoadingRing" IsActive="{x:Bind IsLoading, Mode=OneWay}" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+        </Grid>
+    </Grid>
+</ContentDialog>

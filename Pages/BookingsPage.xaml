@@ -1,0 +1,82 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Page
+    x:Class="App1.Pages.BookingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:models="using:App1.Models"
+    Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
+
+    <Grid Padding="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <TextBlock Text="Управление бронированиями"
+                   Style="{StaticResource TitleTextBlockStyle}"
+                   Margin="0,0,0,10"/>
+
+        <StackPanel Grid.Row="1" Orientation="Horizontal" Spacing="10" Margin="0,0,0,10">
+        <Button x:Name="CheckAvailabilityButton"
+        Content="Проверить"
+        Click="CheckAvailability_Click"/>
+        </StackPanel>
+
+        <ListView Grid.Row="2"
+                  x:Name="BookingsListView"
+                  ItemsSource="{x:Bind Bookings, Mode=OneWay}"
+                  SelectionMode="Single"
+                  Margin="0,0,0,10">
+            <ListView.HeaderTemplate>
+                <DataTemplate>
+                    <Grid Padding="10" Background="{ThemeResource SystemListLowColor}">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="Заезд" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Grid.Column="1" Text="Выезд" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Grid.Column="2" Text="Номер" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Grid.Column="3" Text="Гость" Style="{StaticResource CaptionTextBlockStyle}"/>
+                        <TextBlock Grid.Column="4" Text="Статус" Style="{StaticResource CaptionTextBlockStyle}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.HeaderTemplate>
+            <ListView.ItemTemplate>
+                <DataTemplate x:DataType="models:Booking">
+                    <Grid Padding="10">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="100"/>
+                            <ColumnDefinition Width="80"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="120"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBlock Grid.Column="0" Text="{x:Bind CheckInDate, Mode=OneWay}"/>
+                        <TextBlock Grid.Column="1" Text="{x:Bind CheckOutDate, Mode=OneWay}"/>
+                        <TextBlock Grid.Column="2" Text="{x:Bind Room.RoomNumber, Mode=OneWay}"/>
+                        <TextBlock Grid.Column="3">
+                            <Run Text="{x:Bind Guest.FirstName}"/>
+                            <Run Text=" "/>
+                            <Run Text="{x:Bind Guest.LastName}"/>
+                        </TextBlock>
+                        <TextBlock Grid.Column="4" Text="{x:Bind Status, Mode=OneWay}"/>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <StackPanel Grid.Row="3" Orientation="Horizontal" Spacing="10">
+            <Button x:Name="NewBookingButton" Content="Новое" Click="NewBooking_Click"/>
+            <Button x:Name="EditBookingButton" Content="Редактировать" Click="EditBooking_Click"/>
+            <Button x:Name="CancelBookingButton" Content="Отменить" Click="CancelBooking_Click"/>
+            <Button x:Name="CheckInButton" Content="Check‑in" Click="CheckIn_Click"/>
+            <Button x:Name="CheckOutButton" Content="Check‑out" Click="CheckOut_Click"/>
+        </StackPanel>
+    </Grid>
+</Page>
